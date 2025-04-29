@@ -1,4 +1,1 @@
-print("bonjour toi ")
-print("ça va ?")
-
-print("Oui ça va  ")
+print("bonjour toi, je sui à la maison chez toi tu es ou ? ")
