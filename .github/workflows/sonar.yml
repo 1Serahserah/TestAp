@@ -3,7 +3,7 @@ name: Analyse SonarQube Python
 on:
   push:
     branches:
-      - master  # change en master si ta branche s'appelle master
+      - main  # change en master si ta branche s'appelle master
 
 jobs:
   sonarQube:
