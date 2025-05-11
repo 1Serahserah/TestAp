@@ -1,0 +1,57 @@
+# ⛔️ Dossiers Python à ignorer
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# 🧪 Fichiers de test / coverage
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+nosetests.xml
+.testmondata
+.pytest_cache/
+
+# 🐍 Environnements virtuels
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+
+# 🧱 Build Python
+build/
+dist/
+*.egg-info/
+*.egg
+
+# 💻 IDE - Visual Studio Code
+.vscode/
+
+# 📊 SonarLint et outils d'analyse
+.sonarlint/
+
+# 📂 OS et fichiers cachés
+.DS_Store
+Thumbs.db
+
+# 🔒 Secrets éventuels
+*.env
+.env.*
+.envrc
+
+# 🔧 Logs et fichiers temporaires
+*.log
+*.tmp
+*.swp
+*.bak
+
+# ⚙️ fichiers de configuration Python ou tests
+.mypy_cache/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# 🚫 Ignorer les fichiers SQLite (si utilisés en dev)
+*.sqlite3
