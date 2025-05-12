@@ -16,5 +16,5 @@ jobs:
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@master
         env:
-          SONAR_TOKEN: ${{ secrets.sonar_token }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Auto-généré par GitHub
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Auto-généré par GitHub
