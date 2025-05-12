@@ -1,7 +1,7 @@
 name: SonarQube Analysis
 on:
   push:
-    branches: [ main, develop ]  # Branches à surveiller
+    branches: [ master, develop ]  # Branches à surveiller
   pull_request:
     types: [ opened, synchronize ]
 
