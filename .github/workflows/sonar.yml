@@ -1,9 +1,5 @@
 name: SonarQube Analysis
-on:
-  push:
-    branches: [ master, develop ]  # Branches à surveiller
-  pull_request:
-    types: [ opened, synchronize ]
+on: [push]
 
 jobs:
   sonarqube:
@@ -11,10 +7,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Nécessaire pour l'analyse SonarQube
+          fetch-depth: 0
 
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@master
+        run: |
+          sonar-scanner \
+            -Dsonar.projectKey=spring-myproject \
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Auto-généré par GitHub
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Secret correctement nommé
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}  # À définir dans les secrets GitHub
