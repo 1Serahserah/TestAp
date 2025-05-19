@@ -1,0 +1,6 @@
+projectKey=1Serahserah_TestAp_f5594ed4-e7bf-4646-a934-00f356b0117e
+serverUrl=https://4039-41-223-51-166.ngrok-free.app
+serverVersion=25.5.0.107428
+dashboardUrl=https://4039-41-223-51-166.ngrok-free.app/dashboard?id=1Serahserah_TestAp_f5594ed4-e7bf-4646-a934-00f356b0117e
+ceTaskId=58e0a083-d32b-4557-ad36-6da7a866ec03
+ceTaskUrl=https://4039-41-223-51-166.ngrok-free.app/api/ce/task?id=58e0a083-d32b-4557-ad36-6da7a866ec03

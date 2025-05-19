@@ -1,27 +1,50 @@
-name: Build
+name: Build and SonarQube Analysis
 
 on:
   push:
     branches:
       - main
 
-
 jobs:
   build:
     name: Build and analyze
-    runs-on: windows-latest
+    runs-on: windows-latest  # ou ubuntu-latest si préféré
     
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0  # Nécessaire pour une analyse complète
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'  # Version adaptée à votre projet
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov  # Pour les tests et couverture
+
+      - name: Run tests with coverage
+        run: |
+          pytest --cov=./ --cov-report=xml:coverage.xml tests/
+
       - uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      # If you wish to fail your job when the Quality Gate is red, uncomment the
-      # following lines. This would typically be used to fail a deployment.
-      # - uses: SonarSource/sonarqube-quality-gate-action@v1
-      #   timeout-minutes: 5
-      #   env:
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=1Serahserah_TestAp_f5594ed4-e7bf-4646-a934-00f356b0117e
+            -Dsonar.projectName=TestAp
+            -Dsonar.sources=.
+            -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.python.version=3.10
+            -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.exclusions=**/tests/**,**/venv/**
+
+      - uses: SonarSource/sonarqube-quality-gate-action@v1
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
