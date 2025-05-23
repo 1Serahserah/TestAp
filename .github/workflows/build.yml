@@ -1,25 +1,25 @@
+name: SonarQube Analysis
 on:
-  # Trigger analysis when pushing to your main branches, and when creating a pull request.
   push:
-    branches:
-      - main
-      - master
-      - develop
-      - 'releases/**'
-  pull_request:
-      types: [opened, synchronize, reopened]
+    branches: [ master ]
 
-name: Main Workflow
 jobs:
-  sonarqube:
+  analyze:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        # Disabling shallow clones is recommended for improving the relevancy of reporting
-        fetch-depth: 0
-    - name: SonarQube Scan
-      uses: SonarSource/sonarqube-scan-action@v5.2.0 # Ex: v4.1.0, See the latest version at https://github.com/marketplace/actions/official-sonarqube-scan
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5.2.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: >
+            -Dsonar.host.url=https://your-sonarqube-instance.com  # URL COMPLÈTE avec https://
+            -Dsonar.projectKey=1Serahserah_TestAp_37920ed7-4f6e-480c-98a3-48cb946d55b6
+            -Dsonar.projectName=TestAp
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.verbose=true
