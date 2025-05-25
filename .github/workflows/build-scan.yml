@@ -11,24 +11,24 @@ jobs:
   sonarqube-analysis:
     name: Build and analyze
     runs-on: ubuntu-latest
-    timeout-minutes: 30  # Augmentation du timeout pour les gros projets
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Nécessaire pour une analyse précise
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-          cache: 'pip'  # Activation du cache pour les dépendances
+          cache: 'pip'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install pytest pytest-cov  # Installation des outils de test
+          pip install pytest pytest-cov
 
       - name: Run tests with coverage
         run: |
@@ -43,22 +43,22 @@ jobs:
           args: >
             -Dsonar.projectKey=1Serahserah_TestAp_37920ed7-4f6e-480c-98a3-48cb946d55b6
             -Dsonar.projectName=TestAp
-            -Dsonar.host.url=https://54cf-197-149-242-67.ngrok-free.app
+            -Dsonar.host.url=https://53fe-41-223-51-170.ngrok-free.app
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
             -Dsonar.python.version=3.10
             -Dsonar.sources=.
             -Dsonar.sourceEncoding=UTF-8
             -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.python.linting.reportPaths=pylint-report.xml
             -Dsonar.tests=.
             -Dsonar.test.inclusions=**/test_*.py
             -Dsonar.testExecutionReportPaths=test-results.xml
             -Dsonar.verbose=true
             -Dsonar.scm.provider=git
-            -Dsonar.useDeprecatedScannerEngine=true  # Important pour SonarQube 25+
+            -Dsonar.useDeprecatedScannerEngine=true
 
+      # Version corrigée de l'action Quality Gate
       - name: SonarQube Quality Gate Check
-        uses: SonarSource/sonarqube-quality-gate-action@v1.6.0
+        uses: SonarSource/sonarqube-quality-gate-action@v1.5.0  # Version stable confirmée
         timeout-minutes: 10
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
