@@ -15,9 +15,9 @@ jobs:
     - name: Configure SonarScanner Path
       run: |
         # Ajoute le chemin de votre SonarScanner installé au PATH
-        echo "C:\chemin\vers\sonar-scanner\bin" >> $env:GITHUB_PATH
+        #echo "C:\chemin\vers\sonar-scanner\bin" >> $env:GITHUB_PATH
         # OU si vous l'avez installé dans le dossier par défaut
-        # echo "C:\sonar-scanner\bin" >> $env:GITHUB_PATH
+         echo "C:\sonar-scanner\bin" >> $env:GITHUB_PATH
 
     - name: Cache SonarQube data
       uses: actions/cache@v3
