@@ -1,35 +1,39 @@
-name: Analyse SonarQube
-on: [push, pull_request]
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+
 
 jobs:
-  analyse:
+  build:
+    name: Build and analyze
     runs-on: ubuntu-latest
+    
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
-          python-version: '3.10'
-
-      - name: Analyse SonarQube
-        uses: SonarSource/sonarqube-scan-action@v5.2.0
+          python-version: 3.13.3
+          distribution: 'zulu' # Alternative distribution options are available.
+      - name: Cache SonarQube packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: >
-            -Dsonar.host.url=https://950c-41-223-51-170.ngrok-free.app
-            -Dsonar.projectKey=1Serahserah_TestAp_37920ed7-4f6e-480c-98a3-48cb946d55b6
-            -Dsonar.projectName=TestAp
-            -Dsonar.login=sqa_860224339b6116ffc6ba653ee6b1e7044253d645
-            -Dsonar.verbose=true
-            -Dsonar.useDeprecatedScannerEngine=true
-
-      - name: Quality Gate Check
-        uses: SonarSource/sonarqube-quality-gate-action@v1.6.0
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: https://950c-41-223-51-170.ngrok-free.app
+          SONAR_HOST_URL:  https://950c-41-223-51-170.ngrok-free.app
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=1Serahserah_TestAp_37920ed7-4f6e-480c-98a3-48cb946d55b6 -Dsonar.projectName='TestAp'
