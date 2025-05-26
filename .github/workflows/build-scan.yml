@@ -35,5 +35,5 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL:  https://950c-41-223-51-170.ngrok-free.app
+          SONAR_HOST_URL: https://929b-41-223-51-170.ngrok-free.app
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=1Serahserah_TestAp_37920ed7-4f6e-480c-98a3-48cb946d55b6 -Dsonar.projectName='TestAp'
