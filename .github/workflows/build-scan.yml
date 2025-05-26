@@ -1,39 +1,46 @@
-name: Build
-
-on:
-  push:
-    branches:
-      - master
-
+name: SonarQube Analysis
+on: [push]
 
 jobs:
-  build:
-    name: Build and analyze
-    runs-on: ubuntu-latest
-    
+  analyze:
+    name: SonarQube Scan
+    runs-on: windows-latest
+    timeout-minutes: 30
+
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          python-version: 3.13.3
-          distribution: 'zulu' # Alternative distribution options are available.
-      - name: Cache SonarQube packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Cache Maven packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-      - name: Build and analyze
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: https://929b-41-223-51-170.ngrok-free.app
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=1Serahserah_TestAp_37920ed7-4f6e-480c-98a3-48cb946d55b6 -Dsonar.projectName='TestAp'
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Nécessaire pour une analyse complète
+
+    - name: Configure SonarScanner Path
+      run: |
+        # Ajoute le chemin de votre SonarScanner installé au PATH
+        echo "C:\chemin\vers\sonar-scanner\bin" >> $env:GITHUB_PATH
+        # OU si vous l'avez installé dans le dossier par défaut
+        # echo "C:\sonar-scanner\bin" >> $env:GITHUB_PATH
+
+    - name: Cache SonarQube data
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~\.sonar\cache
+          ~\.m2\repository
+        key: ${{ runner.os }}-sonar-${{ hashFiles('sonar-project.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-sonar-
+
+    - name: Run SonarScanner Analysis
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: https://929b-41-223-51-170.ngrok-free.app 
+      run: |
+        sonar-scanner.bat ^
+          -Dsonar.projectVersion=1.0 ^
+          -Dsonar.qualitygate.wait=false ^
+          -Dsonar.scanner.memory=6g ^
+          -Dsonar.scanner.skipSystemTruststore=true ^
+          -Dsonar.exclusions="**/node_modules/**,**/dist/**,**/coverage/**" ^
+          -Dsonar.cpd.exclusions="**/*.min.js,**/*.bundle.js" ^
+          -Dsonar.java.binaries=target/classes ^
+          -Dsonar.sourceEncoding=UTF-8 ^
+          -Dsonar.verbose=true
