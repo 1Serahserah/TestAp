@@ -58,7 +58,7 @@ jobs:
 
       # Version corrigée de l'action Quality Gate
       - name: SonarQube Quality Gate Check
-        uses: SonarSource/sonarqube-quality-gate-action@v1.5.0  # Version stable confirmée
+        uses: SonarSource/sonarqube-quality-gate-action@main  # Version stable confirmée
         timeout-minutes: 10
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
