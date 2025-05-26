@@ -43,7 +43,7 @@ jobs:
           args: >
             -Dsonar.projectKey=1Serahserah_TestAp_37920ed7-4f6e-480c-98a3-48cb946d55b6
             -Dsonar.projectName=TestAp
-            -Dsonar.host.url= https://d26a-197-149-242-67.ngrok-free.app
+            -Dsonar.host.url=https://d26a-197-149-242-67.ngrok-free.app
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
             -Dsonar.python.version=3.10
             -Dsonar.sources=.
