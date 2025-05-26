@@ -32,7 +32,7 @@ jobs:
     - name: Run SonarScanner Analysis
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: https://929b-41-223-51-170.ngrok-free.app 
+        SONAR_HOST_URL: https://9f03-41-223-51-170.ngrok-free.app
       run: |
         sonar-scanner.bat ^
           -Dsonar.projectVersion=1.0 ^
