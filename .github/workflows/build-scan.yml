@@ -2,21 +2,28 @@ name: Build
 on:
   push:
     branches:
-      -master
+      - master  # Correction: pas de tiret avant "master"
 
 jobs:
   build:
-    name: Build and analyze 
+    name: Build and analyze
     runs-on: windows-latest
     timeout-minutes: 10
 
     steps:
     - uses: actions/checkout@v4
       with:
-        fetch-depth: 0  # Nécessaire pour une analyse complète
-    - uses: SonarSource/sonarqube-scan-action@v5
-    env:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      SONAR_HOST_URL: https://9f03-41-223-51-170.ngrok-free.app
-      
-          
+        fetch-depth: 0  # Correct pour SonarQube
+
+    - name: SonarQube Scan
+      uses: SonarSource/sonarqube-scan-action@v5
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+      with:
+        args: >
+          -Dsonar.host.url=https://9f03-41-223-51-170.ngrok-free.app
+          -Dsonar.projectKey=1Serahserah_TestAp_37920ed7-4f6e-480c-98a3-48cb946d55b6
+          -Dsonar.projectName= TestAp  
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          -Dsonar.verbose=true  # Pour le débogage
