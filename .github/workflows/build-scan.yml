@@ -1,9 +1,12 @@
 name: CI SonarQube_code
-on: [push]
+on:
+  push:
+    branches:
+      -master
 
 jobs:
   analyze:
-    name: SonarQube Scan
+    name: SonarQube Scan 
     runs-on: windows-latest
     timeout-minutes: 11
 
@@ -12,34 +15,10 @@ jobs:
       with:
         fetch-depth: 0  # Nécessaire pour une analyse complète
 
-    - name: Configure SonarScanner Path
-      run: |
-        # Ajoute le chemin de votre SonarScanner installé au PATH
-        #echo "C:\chemin\vers\sonar-scanner\bin" >> $env:GITHUB_PATH
-        # OU si vous l'avez installé dans le dossier par défaut
-         echo "C:\sonar-scanner-cli-7.1.0.4889-windows-x64\sonar-scanner-7.1.0.4889-windows-x64\bin" >> $env:GITHUB_PATH
+    - uses: SonarSource/sonarqube-scan-action@v5
 
-    - name: Cache SonarQube data
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~\.sonar\cache
-          ~\.m2\repository
-        key: ${{ runner.os }}-sonar-${{ hashFiles('sonar-project.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-sonar-
-
-    - name: Run SonarScanner Analysis
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: https://9f03-41-223-51-170.ngrok-free.app
-      run: |
-        sonar-scanner.bat ^
-          -Dsonar.projectVersion=1.0 ^
-          -Dsonar.qualitygate.wait=true ^
-          -Dsonar.scanner.memory=6g ^
-          -Dsonar.scanner.skipSystemTruststore=true ^
-          -Dsonar.exclusions="**/node_modules/**,**/dist/**,**/coverage/**" ^
-          -Dsonar.cpd.exclusions="**/*.min.js*/*.bundle.js" ^
-          -Dsonar.sourceEncoding=UTF-8 ^
-          -Dsonar.verbose=true
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SONAR_HOST_URL: https://9f03-41-223-51-170.ngrok-free.app
+      
+          
