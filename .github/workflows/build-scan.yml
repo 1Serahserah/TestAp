@@ -1,11 +1,11 @@
-name: SonarQube Analysis
+name: CI SonarQube_code
 on: [push]
 
 jobs:
   analyze:
     name: SonarQube Scan
     runs-on: windows-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
 
     steps:
     - uses: actions/checkout@v4
@@ -17,7 +17,7 @@ jobs:
         # Ajoute le chemin de votre SonarScanner installé au PATH
         #echo "C:\chemin\vers\sonar-scanner\bin" >> $env:GITHUB_PATH
         # OU si vous l'avez installé dans le dossier par défaut
-         echo "C:\sonar-scanner\bin" >> $env:GITHUB_PATH
+         echo "C:\sonar-scanner-cli-7.1.0.4889-windows-x64\sonar-scanner-7.1.0.4889-windows-x64\bin" >> $env:GITHUB_PATH
 
     - name: Cache SonarQube data
       uses: actions/cache@v3
@@ -36,11 +36,10 @@ jobs:
       run: |
         sonar-scanner.bat ^
           -Dsonar.projectVersion=1.0 ^
-          -Dsonar.qualitygate.wait=false ^
+          -Dsonar.qualitygate.wait=true ^
           -Dsonar.scanner.memory=6g ^
           -Dsonar.scanner.skipSystemTruststore=true ^
           -Dsonar.exclusions="**/node_modules/**,**/dist/**,**/coverage/**" ^
-          -Dsonar.cpd.exclusions="**/*.min.js,**/*.bundle.js" ^
-          -Dsonar.java.binaries=target/classes ^
+          -Dsonar.cpd.exclusions="**/*.min.js*/*.bundle.js" ^
           -Dsonar.sourceEncoding=UTF-8 ^
           -Dsonar.verbose=true
