@@ -8,7 +8,7 @@ jobs:
   build:
     name: Build and analyze
     runs-on: windows-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
     - uses: actions/checkout@v4
@@ -27,3 +27,4 @@ jobs:
           -Dsonar.projectName=TestAp  
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
           -Dsonar.verbose=true  # Pour le débogage
+          -Dsonar.scanner.memory=6g ^
