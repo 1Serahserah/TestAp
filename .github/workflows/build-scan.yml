@@ -8,7 +8,7 @@ jobs:
   analyze:
     name: SonarQube Scan 
     runs-on: windows-latest
-    timeout-minutes: 11
+    timeout-minutes: 10
 
     steps:
     - uses: actions/checkout@v4
