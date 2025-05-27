@@ -24,6 +24,6 @@ jobs:
         args: >
           -Dsonar.host.url=https://9f03-41-223-51-170.ngrok-free.app
           -Dsonar.projectKey=1Serahserah_TestAp_37920ed7-4f6e-480c-98a3-48cb946d55b6
-          -Dsonar.projectName= TestAp  
+          -Dsonar.projectName=TestAp  
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
           -Dsonar.verbose=true  # Pour le débogage
